@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- The family's list knows the newest apps (PR7-HB, PR7-FS, PR7-AR, PR7-WM), so links between apps and Check for Updates find them.
+
 ## 0.3.0
 
 - **Open in PR7-E**: when PR7-E is installed, the right-click menu opens a folder (or a file's folder) in it, whether or not PR7-E is Windows' folder app.
