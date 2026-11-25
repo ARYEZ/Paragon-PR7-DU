@@ -79,6 +79,17 @@ def test_menus(window, tree, qapp):
     window.answers["launch"] = lambda appname, args: opened.append((appname, args)) or True
     window.show_in_folder(next(c for c in root.children if c.name == "setup.exe"))
     assert opened == [("PR7-E", [str(base)])]
+    window.answers["find"] = lambda appname: appname == "PR7-E"           # PR7-E installed: its own item
+    videos = root.children[0]
+    items = {a.text(): a for a in window.node_menu(videos).actions() if a.text()}
+    assert list(items)[:3] == ["Open", "Show in folder", "Open in PR7-E"]
+    items["Open in PR7-E"].trigger()
+    assert opened[-1] == ("PR7-E", [str(base / "Videos")])                  # a folder: itself
+    setup = next(c for c in root.children if c.name == "setup.exe")
+    {a.text(): a for a in window.node_menu(setup).actions()}["Open in PR7-E"].trigger()
+    assert opened[-1] == ("PR7-E", [str(base)])                             # a file: the folder it's in
+    window.answers["find"] = lambda appname: False
+    assert "Open in PR7-E" not in [a.text() for a in window.node_menu(videos).actions()]
     m = window.main_menu()
     assert [a.text() for a in m.actions() if a.text()][:3] == ["OBSIDIAN", "AURORA", "Show allocated size"]
     window.show_allocated(True)

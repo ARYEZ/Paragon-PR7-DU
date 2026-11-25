@@ -402,6 +402,8 @@ class MainWindow(QMainWindow):
         m = QMenu(self)
         m.addAction("Open", lambda: self.open_node(node))
         m.addAction("Show in folder", lambda: self.show_in_folder(node))
+        if self.answers.get("find", family.find)("PR7-E"):        # the family's file manager, when installed
+            m.addAction("Open in PR7-E", lambda: self.open_in_pr7e(node))
         m.addAction("Copy path", lambda: self.copy_path(node))
         m.addSeparator()
         d = m.addAction("Delete (to the Recycle Bin)...", lambda: self.delete(node))
@@ -432,6 +434,11 @@ class MainWindow(QMainWindow):
             subprocess.Popen(["explorer", "/select,", node.path()])
         else:
             QDesktopServices.openUrl(QUrl.fromLocalFile(folder))
+
+    def open_in_pr7e(self, node: Node) -> bool:
+        """A folder in PR7-E; a file's folder (WizTree's Explorer item, with the family's file manager)."""
+        folder = node.path() if node.is_dir else os.path.dirname(node.path())
+        return self.answers.get("launch", family.launch)("PR7-E", [folder])
 
     def copy_path(self, node: Node | None = None):
         node = node if isinstance(node, Node) else self.selected()

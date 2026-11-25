@@ -20,7 +20,8 @@ owner writes Python; explain the why of changes.
 - `pr7du/models.py`: plain Python models (never QStandardItemModel): `TreeModel` (rows cached per folder),
   `FilesModel` (5000 biggest), `TypesModel`. `main_window.py`: scans on a thread (`sync = True` in tests), `answers`
   for every question, `delete` (Recycle Bin via QFile.moveToTrash, or PR7DU_TRASH in tests; totals shrink up the
-  chain), `restart_as_admin` (ShellExecute "runas" with `--elevated --scan`). `app.py`: one window per user
+  chain), `restart_as_admin` (ShellExecute "runas" with `--elevated --scan`). Open in PR7-E (`open_in_pr7e`) when
+  `family.find` finds it. `app.py`: one window per user
   (QLocalSocket hand-off, PR7-R's Windows fix), `--selftest FOLDER OUT.json`.
 - Installer `installer/pr7du.iss` (per user, AppId {9DFF1917-658D-4BE5-8C19-A88E7150AC24} permanent). CI installs it;
   `tools/verify_install.py installed` scans a known folder and reads C: through its MFT with the installed exe.
