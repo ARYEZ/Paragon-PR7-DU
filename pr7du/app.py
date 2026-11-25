@@ -138,7 +138,8 @@ def main(argv: list[str] | None = None) -> int:
     app.setApplicationName("PR7-DU")
     if not elevated and hand_over(path):
         return 0
-    theme.set_finish(settings.get("finish", "obsidian"))
+    from . import finish
+    theme.set_finish(finish.start(settings.get("finish", "obsidian")))
     theme.load_fonts()
     from PySide6.QtGui import QIcon
     icon = os.path.join(os.path.dirname(__file__), "icons", "app.ico")
@@ -146,6 +147,11 @@ def main(argv: list[str] | None = None) -> int:
         app.setWindowIcon(QIcon(icon))
     from .main_window import MainWindow
     win = MainWindow()
+    # one finish for the family: follow a switch made in another family app (finish.py)
+    from PySide6.QtCore import QTimer
+    _follow = QTimer(win)
+    _follow.timeout.connect(lambda: finish.follow(theme.FINISH, win.set_finish))
+    _follow.start(2000)
     listen(win)
     win.show()
     if path:

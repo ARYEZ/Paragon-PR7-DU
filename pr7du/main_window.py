@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFile
                                QLabel, QMainWindow, QMenu, QMessageBox, QPushButton, QSplitter, QStackedWidget,
                                QStyledItemDelegate, QTableView, QTreeView, QVBoxLayout, QWidget)
 
+from . import finish
 from . import __version__, family, kinds, scan, settings, theme, widgets
 from .mapview import MapView
 from .models import FRACTION, NODE, FilesModel, TreeModel, TypesModel, human, when
@@ -525,6 +526,7 @@ class MainWindow(QMainWindow):
 
     def set_finish(self, name: str):
         theme.set_finish(name)
+        finish.set(theme.FINISH)                 # every family app follows (finish.py)
         settings.set("finish", name)
         self.restyle()
 
